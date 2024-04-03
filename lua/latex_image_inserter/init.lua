@@ -4,7 +4,7 @@ local state = require("latex_image_inserter.state")
 local M = {}
 
 function set_keymaps()
-	vim.keymap.set("n", state.opts.keys.next, function()
+	vim.keymap.set("n", state.opts.keys.insert_image, function()
 		local input
 		vim.ui.input({ prompt = "Image name: " }, function(inp)
 			input = inp
