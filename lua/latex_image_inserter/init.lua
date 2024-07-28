@@ -3,16 +3,24 @@ local state = require("latex_image_inserter.state")
 
 local M = {}
 
-function set_keymaps()
+local function set_keymaps()
 	vim.keymap.set("n", state.opts.keys.insert_image, function()
 		local input
 		vim.ui.input({ prompt = "Image name: " }, function(inp)
 			input = inp
-			path = vim.fn.expand("%:p:h")
+			local path = vim.fn.expand("%:p:h")
 			if vim.fn.isdirectory(path .. "/figures") == 0 then
 				vim.fn.system("mkdir " .. path .. "/figures")
 			end
-			vim.fn.system("xclip -selection clipboard -t image/png -o >" .. path .. "/figures/" .. input)
+
+			local clipboard_cmd
+			if os.getenv("WAYLAND_DISPLAY") then
+				clipboard_cmd = "wl-paste -t image/png > "
+			else
+				clipboard_cmd = "xclip -selection clipboard -t image/png -o > "
+			end
+
+			vim.fn.system(clipboard_cmd .. path .. "/figures/" .. input)
 			local line
 			local col
 			line, col = unpack(vim.api.nvim_win_get_cursor(0))
