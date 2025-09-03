@@ -1,7 +1,7 @@
 # lazy.nvim
 ```
 return {
-  "matthejue/latex_image_inserter",
+  "matthejue/image_inserter",
   opts = {
     keys = {
       insert_image = "<A-i>",
